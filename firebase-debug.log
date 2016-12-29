@@ -1,0 +1,14 @@
+[debug] ----------------------------------------------------------------------
+[debug] Command:      C:\Program Files\nodejs\node.exe C:\Users\Vinny\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase serve
+[debug] CLI Version:  3.2.1
+[debug] Platform:     win32
+[debug] Node Version: v4.6.0
+[debug] Time:         Wed Dec 28 2016 16:18:06 GMT-0500 (Eastern Standard Time)
+[debug] ----------------------------------------------------------------------
+[debug] 
+[info] Starting Firebase development server...
+[info] 
+[info] Project Directory: C:\Users\Vinny\Google Drive\RCBprojects\fbTrainTracker
+[info] Public Directory: public
+[info] 
+[info] Server listening at: http://localhost:5000
