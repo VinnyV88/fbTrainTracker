@@ -2,178 +2,172 @@
 <html lang="en">
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Train Tracker</title>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
-<!--     <script src="https://cdn.firebase.com/libs/firebaseui/1.0.0/firebaseui.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Train Tracker</title>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+  <!--     <script src="https://cdn.firebase.com/libs/firebaseui/1.0.0/firebaseui.js"></script>
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/1.0.0/firebaseui.css" /> -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 </head>
 
 <body>
-
-    <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="index.html"><span class="byname"> by Vincent Visconti</span><img id="logo" src="assets/images/ViVi_Web_logo_bb.svg" alt="Logo"></a>
-            </div>
-                <ul class="nav navbar-nav navbar-right">
-                  <li id="sign-out" hidden><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Out</a></li>
-                  <li id="sign-in"><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-                </ul>
-            </div>
-
-    </nav>
-
-    <div class="container">
-
-        <div id="user-container">
-            <div id="user-pic"></div>
-            <div id="user-name"></div>
-        </div>
-  
-        <br>
-        <!-- Jumbotron -->
-        <div class="jumbotron">
-            <h1 class="text-center">Train Tracker</h1>
-            <div id="clock" class="clock">loading ...</div>
-        </div>
-
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Train Tracker Schedule</h3>
-                    </div>
-                    <div class="panel-body">
-                        <table class="train-table" style="width:100%">
-                            <tr>
-                                <th style="width:20%">Train Name</th>
-                                <th style="width:20%">Destination</th>
-                                <th style="width:20%">Frequency</th>
-                                <th style="width:20%">Next Arrival</th>
-                                <th style="width:20%">Minutes Away</th>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <!-- Add Train Panel-->
-            <div class="col-lg-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Train Tracker Administration</h3>
-                    </div>
-                    <div class="panel-body">
-                        <form role="form">
-                            <div class="form-group">
-                                <label for="train-name-input">Train Name:</label>
-                                <input class="form-control" id="train-name-input" placeholder="Amtrak" type="text">
-                            </div>
-                            <div class="form-group">
-                                <label for="destination-input">Destination:</label>
-                                <input class="form-control" id="destination-input" placeholder="New York" type="text">
-                            </div>
-                            <div class="form-group">
-                                <label for="first-train-time-input">First Train Time: (Military)</label>
-                                <input class="form-control timepicker" name="timepicker" id="first-train-time-input" placeholder="13:45">
-                            </div>
-                            <div class="form-group">
-                                <label for="frequency-input">Frequency: (Minutes)</label>
-                                <input class="form-control" id="frequency-input" placeholder="45" type="text">
-                            </div>
-                            <input class="btn btn-default" id="add-train" type="submit">
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="index.html"><span class="byname"> by Vincent Visconti</span><img id="logo" src="assets/images/ViVi_Web_logo_bb.svg" alt="Logo"></a>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="hidden" id="sign-out"><a href="#"><span class="glyphicon glyphicon-log-out"></span> Sign Out</a></li>
+        <li id="sign-in"><a href="#"><span class="glyphicon glyphicon-user"></span> Login</a></li>
+      </ul>
     </div>
-        <!-- Edit Modal -->
-        <div id="editModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Edit Train Information</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form role="form">
-                            <div class="form-group">
-                                <label for="train-name-edit">Train Name:</label>
-                                <input class="form-control" id="train-name-edit" type="text">
-                            </div>
-                            <div class="form-group">
-                                <label for="destination-edit">Destination:</label>
-                                <input class="form-control" id="destination-edit" type="text">
-                            </div>
-                            <div class="form-group">
-                                <label for="first-train-time-edit">First Train Time: (Military)</label>
-                                <input class="form-control timepicker" name="timepicker" id="first-train-time-edit">
-                            </div>
-                            <div class="form-group">
-                                <label for="frequency-edit">Frequency: (Minutes)</label>
-                                <input class="form-control" id="frequency-edit" type="text">
-                            </div>
-                        </form>
-                        <div class="modal-footer">
-                            <input class="btn btn-default" id="edit-train-info" type="submit">
-                            <button type="button" class="btn btn-default close-edit" data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  </nav>
+  <div class="container">
+    <div id="user-container">
+      <div id="user-pic"></div>
+      <div id="user-name"></div>
+    </div>
+    <br>
+    <!-- Jumbotron -->
+    <div class="jumbotron">
+      <h1 class="text-center">Train Tracker</h1>
+      <div id="clock" class="clock">loading ...</div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Train Tracker Schedule</h3>
+          </div>
+          <div class="panel-body">
+            <table class="train-table" style="width:100%">
+              <tr>
+                <th style="width:20%">Train Name</th>
+                <th style="width:20%">Destination</th>
+                <th style="width:20%">Frequency</th>
+                <th style="width:20%">Next Arrival</th>
+                <th style="width:20%">Minutes Away</th>
+              </tr>
+            </table>
+          </div>
         </div>
-        <!-- Delete Modal -->
-        <div id="deleteModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Delete Train Information</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form role="form">
-                            <div class="form-group">
-                                <label for="train-name-delete">Train Name:</label>
-                                <input class="form-control" id="train-name-delete" disabled type="text">
-                            </div>
-                            <div class="form-group">
-                                <label for="destination-delete">Destination:</label>
-                                <input class="form-control" id="destination-delete" disabled type="text">
-                            </div>
-                            <div class="form-group">
-                                <label for="first-train-time-delete">First Train Time: (Military)</label>
-                                <input class="form-control timepicker" name="timepicker" disabled id="first-train-time-delete">
-                            </div>
-                            <div class="form-group">
-                                <label for="frequency-delete">Frequency: (Minutes)</label>
-                                <input class="form-control" id="frequency-delete" disabled type="text">
-                            </div>
-                        </form>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" id="delete-train-info" data-dismiss="modal">Delete</button>
-                            <button type="button" class="btn btn-default close-delete" data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      </div>
+    </div>
+    <div class="row">
+      <!-- Add Train Panel-->
+      <div class="col-lg-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Train Tracker Administration</h3>
+          </div>
+          <div class="panel-body">
+            <form role="form">
+              <div class="form-group">
+                <label for="train-name-input">Train Name:</label>
+                <input class="form-control" id="train-name-input" placeholder="Amtrak" type="text">
+              </div>
+              <div class="form-group">
+                <label for="destination-input">Destination:</label>
+                <input class="form-control" id="destination-input" placeholder="New York" type="text">
+              </div>
+              <div class="form-group">
+                <label for="first-train-time-input">First Train Time: (Military)</label>
+                <input class="form-control timepicker" name="timepicker" id="first-train-time-input" placeholder="13:45">
+              </div>
+              <div class="form-group">
+                <label for="frequency-input">Frequency: (Minutes)</label>
+                <input class="form-control" id="frequency-input" placeholder="45" type="text">
+              </div>
+              <input class="btn btn-default" id="add-train" type="submit">
+            </form>
+          </div>
         </div>
-        <script src="https://code.jquery.com/jquery.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/FitText.js/1.1/jquery.fittext.min.js"></script>
-        <script src="assets/js/app.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      </div>
+    </div>
+  </div>
+  <!-- Edit Modal -->
+  <div id="editModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Edit Train Information</h4>
+        </div>
+        <div class="modal-body">
+          <form role="form">
+            <div class="form-group">
+              <label for="train-name-edit">Train Name:</label>
+              <input class="form-control" id="train-name-edit" type="text">
+            </div>
+            <div class="form-group">
+              <label for="destination-edit">Destination:</label>
+              <input class="form-control" id="destination-edit" type="text">
+            </div>
+            <div class="form-group">
+              <label for="first-train-time-edit">First Train Time: (Military)</label>
+              <input class="form-control timepicker" name="timepicker" id="first-train-time-edit">
+            </div>
+            <div class="form-group">
+              <label for="frequency-edit">Frequency: (Minutes)</label>
+              <input class="form-control" id="frequency-edit" type="text">
+            </div>
+          </form>
+          <div class="modal-footer">
+            <input class="btn btn-default" id="edit-train-info" type="submit">
+            <button type="button" class="btn btn-default close-edit" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Delete Modal -->
+  <div id="deleteModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Delete Train Information</h4>
+        </div>
+        <div class="modal-body">
+          <form role="form">
+            <div class="form-group">
+              <label for="train-name-delete">Train Name:</label>
+              <input class="form-control" id="train-name-delete" disabled type="text">
+            </div>
+            <div class="form-group">
+              <label for="destination-delete">Destination:</label>
+              <input class="form-control" id="destination-delete" disabled type="text">
+            </div>
+            <div class="form-group">
+              <label for="first-train-time-delete">First Train Time: (Military)</label>
+              <input class="form-control timepicker" name="timepicker" disabled id="first-train-time-delete">
+            </div>
+            <div class="form-group">
+              <label for="frequency-delete">Frequency: (Minutes)</label>
+              <input class="form-control" id="frequency-delete" disabled type="text">
+            </div>
+          </form>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" id="delete-train-info" data-dismiss="modal">Delete</button>
+            <button type="button" class="btn btn-default close-delete" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FitText.js/1.1/jquery.fittext.min.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </body>
 
 </html>

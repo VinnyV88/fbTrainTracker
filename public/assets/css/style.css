@@ -3,9 +3,10 @@
 }
 
 #logo {
-  margin: -64px 0 0px -160px; /* play with these to position the image */
-  z-index:100;
-  width:156px;
+  margin: -64px 0 0px -160px;
+  /* play with these to position the image */
+  z-index: 100;
+  width: 156px;
   padding: 5px;
 }
 
@@ -14,14 +15,19 @@
   border-top: 23px solid transparent;
 }
 
+.navbar-right {
+  position: relative;
+  top: -36px;
+}
+
 .navbar-inverse .navbar-brand {
   color: white;
   font-family: 'Russo One', sans-serif;
   font-size: 15px;
-  
 }
 
-.navbar > .container .navbar-brand, .navbar > .container-fluid .navbar-brand {
+.navbar > .container .navbar-brand,
+.navbar > .container-fluid .navbar-brand {
   margin-left: 150px;
 }
 
@@ -29,7 +35,42 @@
   background-image: none;
   /*background-color: black;*/
   border-color: #1d5510;
+}
 
+.navbar-inverse .navbar-nav>li>a {
+  color: white;
+}
+
+#user-container {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  top: 31px;
+  width: 100%;
+  right: 0;
+  padding-left: 10px;
+  justify-content: flex-end;
+  padding-right: 10px;
+}
+
+#user-container #user-pic {
+  top: -3px;
+  position: relative;
+  display: inline-block;
+  background-image: url('/assets/images/profile_placeholder.png');
+  background-repeat: no-repeat;
+  width: 40px;
+  height: 40px;
+  background-size: 40px;
+  border-radius: 20px;
+}
+
+#user-container #user-name {
+  font-size: 16px;
+  line-height: 36px;
+  padding-right: 10px;
+  padding-left: 20px;
+  color: white;
 }
 
 body {
@@ -44,64 +85,42 @@ body {
   clear: both;
 }
 
-.hidden {
+*.hidden {
   display: none;
 }
 
-#user-info {
-  border: 1px solid #CCC;
-  clear: both;
-  margin: 0 auto 20px;
-  max-width: 400px;
-  padding: 10px;
+#edit-train {
+  cursor: pointer;
+  text-decoration: underline;
+
+}
+
+#delete-train {
+  cursor: pointer;
+  text-decoration: underline;
+  
+}
+.ui-timepicker {
   text-align: left;
 }
 
-#photo-container {
-  background-color: #EEE;
-  border: 1px solid #CCC;
-  float: left;
-  height: 80px;
-  margin-right: 10px;
-  width: 80px;
-}
-
-#photo {
-  height: 80px;
-  margin: 0;
-  width: 80px;
-}
-
-@media (max-width: 300px) {
-  #photo-container,
-  #photo {
-    height: 40px;
-    width: 40px;
-  }
-}
-
-
-.ui-timepicker {
-	text-align: left;
-}
-
 .clock {
-    float: left;
-    position: relative;
-    top: 10px;
-    left: -45px;
-    height: 35px;
-    width: 25%;
-    line-height: 35px;
-    /* margin: 150px auto 0; */
-    padding: 0 50px;
-    background: #222;
-    color: #eee;
-    text-align: center;
-    border-radius: 15px;
-    box-shadow: 0 0 7px #222;
-    text-shadow: 0 0 3px #fff;
-    font-family: "liquid_crystalregular", sans-serif;
-    user-select: none;
-    user-drag: none;
+  float: left;
+  position: relative;
+  top: 10px;
+  left: -45px;
+  height: 35px;
+  width: 25%;
+  line-height: 35px;
+  /* margin: 150px auto 0; */
+  padding: 0 50px;
+  background: #222;
+  color: #eee;
+  text-align: center;
+  border-radius: 15px;
+  box-shadow: 0 0 7px #222;
+  text-shadow: 0 0 3px #fff;
+  font-family: "liquid_crystalregular", sans-serif;
+  user-select: none;
+  user-drag: none;
 }
