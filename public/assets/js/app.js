@@ -20,27 +20,27 @@ $(document).ready(function() {
 
   var trainKey;
 
-  'use strict';
+  "use strict";
 
   // Initialize
   function trainTracker() {
 
     // Shortcuts to DOM Elements.
-    this.userPic = document.getElementById('user-pic');
-    this.userName = document.getElementById('user-name');
-    this.signInButton = document.getElementById('sign-in');
-    this.signOutButton = document.getElementById('sign-out');
-    this.addTrainButton = document.getElementById("add-train");
+    this.userPic = $("#user-pic");
+    this.userName = $("#user-name");
+    this.signInButton = $("#sign-in");
+    this.signOutButton = $("#sign-out");
+    this.addTrainButton = $("#add-train");
 
     // Create Button Click Event Listeners
-    this.signOutButton.addEventListener('click', this.signOut.bind(this));
-    this.signInButton.addEventListener('click', this.signIn.bind(this));
-    this.addTrainButton.addEventListener('click', this.addTrain.bind(this));
+    $(document).on("click", "#sign-out", this.signOut);
+    $(document).on("click", "#sign-in", this.signIn);
+    $(document).on("click", "#add-train", this.addTrain);
 
-    $(document).on('click', "#edit-train", this.editTrain);
-    $(document).on('click', "#edit-train-info", this.editTrainInfo);
-    $(document).on('click', "#delete-train", this.deleteTrain);
-    $(document).on('click', "#delete-train-info", this.deleteTrainInfo);
+    $(document).on("click", "#edit-train", this.editTrain);
+    $(document).on("click", "#edit-train-info", this.editTrainInfo);
+    $(document).on("click", "#delete-train", this.deleteTrain);
+    $(document).on("click", "#delete-train-info", this.deleteTrainInfo);
 
     this.initFirebase();
   };
@@ -59,21 +59,22 @@ $(document).ready(function() {
   trainTracker.prototype.signIn = function() {
     // Sign in Firebase using popup auth and Google as the identity provider.
     var provider = new firebase.auth.GoogleAuthProvider();
-    this.auth.signInWithPopup(provider);
+    window.trainTracker.auth.signInWithPopup(provider);
   };
 
-  // Signs-out of Friendly Chat.
+  // Signs-out of App.
   trainTracker.prototype.signOut = function() {
-    // Sign out of Firebase.
-    this.auth.signOut();
+    window.trainTracker.auth.signOut();
   };
 
   trainTracker.prototype.addTrain = function(event) {
     event.preventDefault();
 
-    if (!(this.checkSignedInWithMessage())) { //not signed in, not allowed to add
+    if (!(trainTracker.prototype.checkSignedIn())) { //not signed in, not allowed to add
 
-      alert("not allowed to add")
+      $(".message").html("<p>You must be signed in to this app to add train records!</p>");
+
+      $("#msgModal").modal();
 
     } else { // signed in, can add train
 
@@ -92,6 +93,12 @@ $(document).ready(function() {
         dateAdded: firebase.database.ServerValue.TIMESTAMP
       }); //end firebase push
 
+      //delete text input after add
+      $("#train-name-input").val("");
+      $("#destination-input").val("");
+      $("#first-train-time-input").val("");
+      $("#frequency-input").val("");
+
     } //end-if signed in  
 
   }; //end add-train click
@@ -99,9 +106,11 @@ $(document).ready(function() {
 
   trainTracker.prototype.editTrain = function() {
 
-    if (!(trainTracker.prototype.checkSignedInWithMessage())) { //not signed in, not allowed to edit
+    if (!(trainTracker.prototype.checkSignedIn())) { //not signed in, not allowed to edit
 
-      alert("not allowed to edit")
+      $(".message").html("<p>You must be signed in to this app to edit train information!</p>");
+
+      $("#msgModal").modal();
 
     } else { // signed in, can edit train
 
@@ -155,9 +164,11 @@ $(document).ready(function() {
 
   trainTracker.prototype.deleteTrain = function() {
 
-    if (!(trainTracker.prototype.checkSignedInWithMessage())) { //not signed in, not allowed to delete
+    if (!(trainTracker.prototype.checkSignedIn())) { //not signed in, not allowed to delete
 
-      alert("not allowed to delete")
+      $(".message").html("<p>You must be signed in to this app to delete train records!</p>");
+
+      $("#msgModal").modal();
 
     } else { // signed in, can delete train
 
@@ -205,63 +216,42 @@ $(document).ready(function() {
       var userName = user.displayName;
 
       // Set the user's profile pic and name.
-      this.userPic.style.backgroundImage = 'url(' + profilePicUrl + ')';
-      this.userName.textContent = userName;
+      this.userPic.css("backgroundImage", "url(" + profilePicUrl + ")");
+      this.userName.text(userName);
 
       // Show user's profile and sign-out button.
-      $("#user-name").removeClass("hidden");
-      $("#user-pic").removeClass("hidden");
-      $("#sign-out").removeClass("hidden");
-      // this.userName.removeAttribute('hidden');
-      // this.userPic.removeAttribute('hidden');
-      // this.signOutButton.removeAttribute('hidden');
+      this.userName.removeClass("hidden");
+      this.userPic.removeClass("hidden");
+      this.signOutButton.removeClass("hidden");
 
       // Hide sign-in button.
-      $("#sign-in").addClass("hidden");
-      // this.signInButton.setAttribute('hidden', 'true');
+      this.signInButton.addClass("hidden");
 
     } else { // User is signed out!
       // Hide user's profile and sign-out button.
-      $("#user-name").addClass("hidden");
-      $("#user-pic").addClass("hidden");
-      $("#sign-out").addClass("hidden");
-      // this.userName.setAttribute('hidden', 'true');
-      // this.userPic.setAttribute('hidden', 'true');
-      // this.signOutButton.setAttribute('hidden', 'true');
+      this.userName.addClass("hidden");
+      this.userPic.addClass("hidden");
+      this.signOutButton.addClass("hidden");
 
       // Show sign-in button.
-      $("#sign-in").removeClass("hidden");
-      // this.signInButton.removeAttribute('hidden');
+      this.signInButton.removeClass("hidden");
     }
   };
 
   // Returns true if user is signed-in. Otherwise false and displays a message.
-  trainTracker.prototype.checkSignedInWithMessage = function() {
+  trainTracker.prototype.checkSignedIn = function() {
     // Return true if the user is signed in Firebase
     if (window.trainTracker.auth.currentUser) {
       return true;
     }
 
-    // Display a message to the user using a Toast.
-
-
-
-    //Inset modal message here
-
-
-
-    // var data = {
-    //   message: 'You must sign-in first',
-    //   timeout: 2000
-    // };
-    // this.signInSnackbar.MaterialSnackbar.showSnackbar(data);
+    // Return false if the user is not signed in Firebase
     return false;
   };
 
-
   trainTracker.prototype.update = function() {
     var timeNow = moment();
-    $("#clock").html(timeNow.format("hh:mm:ss A"));
+    // $("#clock").html(timeNow.format("hh:mm:ss A"));
 
     if (timeNow.format("ss") === "00") {
       trainTracker.prototype.refreshTrainTracker();
@@ -284,9 +274,6 @@ $(document).ready(function() {
     firebase.database().ref()
       .once("value")
       .then(function(tableSnapshot) {
-        // database.ref().on("value", function(tableSnapshot) {
-
-        // console.log("value")
 
         tableSnapshot.forEach(function(dataSnapshot) {
 
@@ -300,37 +287,31 @@ $(document).ready(function() {
 
             // First Time (pushed back 1 year to make sure it comes before current time)
             var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
-            // console.log(firstTimeConverted);
 
             // Current Time
             var currentTime = moment();
-            // console.log("CURRENT TIME: " + moment(currentTime).format("HH:mm"));
 
             // Difference between the times
             var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
-            // console.log("DIFFERENCE IN TIME: " + diffTime);
 
             // Time apart (remainder)
             var tRemainder = diffTime % tFrequency;
-            // console.log(tRemainder);
 
             // Minute Until Train
             var tMinutesTillTrain = tFrequency - tRemainder;
-            // console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
 
             // Next Train
             var nextTrain = moment().add(tMinutesTillTrain, "minutes");
-            // console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
 
             // Train schedule to table
             var $tr = $("<tr>").attr("data-key", dataKey)
               .append("<td> <span id=\"edit-train\">Edit</span>/" +
                            "<span id=\"delete-train\">Delete</span>")
-              .append("<td>" + dataObj.trainName)
-              .append("<td>" + dataObj.destination)
-              .append("<td>" + dataObj.frequency)
-              .append("<td>" + moment(nextTrain).format("hh:mm A"))
-              .append("<td>" + tMinutesTillTrain);
+              .append("<td class=\"table-lcd-font\">" + dataObj.trainName)
+              .append("<td class=\"table-lcd-font\">" + dataObj.destination)
+              .append("<td class=\"table-lcd-font\">" + dataObj.frequency)
+              .append("<td class=\"table-lcd-font\">" + moment(nextTrain).format("hh:mm A"))
+              .append("<td class=\"table-lcd-font\">" + tMinutesTillTrain);
             console.log("for-each")
             $(".train-table").append($tr);
 
@@ -358,14 +339,16 @@ $(document).ready(function() {
     .append("<th style=\"width:15%\">Next Arrival</th>")
     .append("<th style=\"width:15%\">Minutes Away</th>"));
 
-  $("#clock").fitText(1.3);
+  // $("#clock").fitText(1.3);
+
+  var clock = $("#clock").FlipClock({
+    clockFace: "TwelveHourClock"
+  });
 
   setInterval(trainTracker.prototype.update, 1000);
 
 
   databaseRef.ref().on("child_added", function(childSnapshot) {
-
-    // console.log("child_added")
 
     var tFrequency = childSnapshot.val().frequency;
 
@@ -373,38 +356,32 @@ $(document).ready(function() {
 
     // First Time (pushed back 1 year to make sure it comes before current time)
     var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
-    // console.log(firstTimeConverted);
 
     // Current Time
     var currentTime = moment();
-    // console.log("CURRENT TIME: " + moment(currentTime).format("HH:mm"));
 
     // Difference between the times
     var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
-    // console.log("DIFFERENCE IN TIME: " + diffTime);
 
     // Time apart (remainder)
     var tRemainder = diffTime % tFrequency;
-    // console.log(tRemainder);
 
     // Minute Until Train
     var tMinutesTillTrain = tFrequency - tRemainder;
-    // console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
 
     // Next Train
     var nextTrain = moment().add(tMinutesTillTrain, "minutes");
-    // console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
 
     // Train schedule to table
     var $tr = $("<tr>").attr("data-key", childSnapshot.key)
       .append("<td> <span id=\"edit-train\">Edit</span>/" +
                    "<span id=\"delete-train\">Delete</span>")
-      .append("<td>" + childSnapshot.val().trainName)
-      .append("<td>" + childSnapshot.val().destination)
-      .append("<td>" + childSnapshot.val().frequency)
-      .append("<td>" + moment(nextTrain).format("hh:mm A"))
-      .append("<td>" + tMinutesTillTrain);
-    // console.log("child-added");
+      .append("<td class=\"table-lcd-font\">" + childSnapshot.val().trainName)
+      .append("<td class=\"table-lcd-font\">" + childSnapshot.val().destination)
+      .append("<td class=\"table-lcd-font\">" + childSnapshot.val().frequency)
+      .append("<td class=\"table-lcd-font\">" + moment(nextTrain).format("hh:mm A"))
+      .append("<td class=\"table-lcd-font\">" + tMinutesTillTrain);
+
     $(".train-table").append($tr);
 
     // Handle the errors

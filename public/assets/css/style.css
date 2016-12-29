@@ -2,12 +2,47 @@
   box-sizing: border-box;
 }
 
+@font-face {
+  font-family: 'LCDBOLD';
+  src: url('../LCDBOLD/LCDBOLD.eot');
+  src: local('../LCDBOLD/LCDBOLD'), url('../LCDBOLD/LCDBOLD.woff') format('woff'), url('../LCDBOLD/LCDBOLD.ttf') format('truetype');
+}
+
+.table-lcd-font {
+  font-family: 'LCDBOLD' !important;
+  font-size: 14px;
+  color: #FFFF00;
+}
+
+th {
+  font-size: 16px;
+  text-decoration: underline;
+}
+
 #logo {
   margin: -64px 0 0px -160px;
   /* play with these to position the image */
   z-index: 100;
   width: 156px;
   padding: 5px;
+}
+
+.jumbotron {
+  background: #222;
+  font-family: 'LCDBOLD' !important;
+  color: #FFFF00;
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-top: 25px;
+  padding-bottom: 20px;
+}
+
+.ttLogo {
+  position: relative;
+  float: left;
+  width: 100px;
+  top: 5px;
+  left: 250px;
 }
 
 .navbar {
@@ -57,7 +92,7 @@
   top: -3px;
   position: relative;
   display: inline-block;
-  background-image: url('/assets/images/profile_placeholder.png');
+  background-image: url("/assets/images/profile_placeholder.png");
   background-repeat: no-repeat;
   width: 40px;
   height: 40px;
@@ -77,6 +112,32 @@ body {
   margin: 0;
 }
 
+.panel-default>.panel-heading {
+    background-image: none;
+    background-color: #1d5510;
+    color: white;
+}
+
+.panel-body {
+  background: #222;
+  color: #eee;
+
+}
+
+.btn-default {
+    background-color: #1d5510;
+    color: white;
+     text-shadow: none; 
+    background-image: none;
+    border-color: #dbdbdb;
+    border-color: #ccc;
+}
+
+.btn-default:focus, .btn-default:hover {
+    background-color: white;
+    color: #1d5510;
+}
+
 #container {
   text-align: center;
 }
@@ -88,6 +149,7 @@ body {
 *.hidden {
   display: none;
 }
+
 
 #edit-train {
   cursor: pointer;
@@ -104,7 +166,16 @@ body {
   text-align: left;
 }
 
-.clock {
+.clock-wrapper {
+  text-align: center;
+}
+
+.flip-clock-wrapper {
+    width: auto;
+    display: inline-block;
+}
+
+/*.clock {
   float: left;
   position: relative;
   top: 10px;
@@ -112,7 +183,6 @@ body {
   height: 35px;
   width: 25%;
   line-height: 35px;
-  /* margin: 150px auto 0; */
   padding: 0 50px;
   background: #222;
   color: #eee;
@@ -123,4 +193,4 @@ body {
   font-family: "liquid_crystalregular", sans-serif;
   user-select: none;
   user-drag: none;
-}
+}*/
