@@ -153,15 +153,35 @@ body {
 
 #edit-train {
   cursor: pointer;
-  text-decoration: underline;
+  font-size: 18px;
+  margin-right: 8px;
+  /*text-decoration: underline;*/
 
 }
 
 #delete-train {
   cursor: pointer;
-  text-decoration: underline;
-  
+  font-size: 18px;
+  /*text-decoration: underline;*/
 }
+
+/*.tip + .tooltip > .tooltip-inner {
+      background-color: #73AD21; 
+      color: #FFFFFF; 
+      border: 1px solid green; 
+      padding: 15px;
+      font-size: 20px;
+  }
+
+.tip + .tooltip.right > .tooltip-arrow {
+      border-right: 5px solid black;
+  }
+
+.tip + .tooltip.left > .tooltip-arrow {
+      border-right: 5px solid black;
+  }
+*/
+
 .ui-timepicker {
   text-align: left;
 }

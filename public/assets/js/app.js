@@ -34,7 +34,8 @@ $(document).ready(function() {
 
     // Create Button Click Event Listeners
     $(document).on("click", "#sign-out", this.signOut);
-    $(document).on("click", "#sign-in", this.signIn);
+    $(document).on("click", "#google-sign-in", this.googleSignIn);
+    $(document).on("click", "#github-sign-in", this.githubSignIn);
     $(document).on("click", "#add-train", this.addTrain);
 
     $(document).on("click", "#edit-train", this.editTrain);
@@ -55,16 +56,90 @@ $(document).ready(function() {
   };
 
 
-  // Signs-in
-  trainTracker.prototype.signIn = function() {
+  // Signs-in to google
+  trainTracker.prototype.googleSignIn = function() {
     // Sign in Firebase using popup auth and Google as the identity provider.
     var provider = new firebase.auth.GoogleAuthProvider();
-    window.trainTracker.auth.signInWithPopup(provider);
-  };
+    window.trainTracker.auth.signInWithPopup(provider)
+        .catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        $(".message").html(errorMessage);
+        $("#msgModal").modal(); 
+        console.log(error);
+        });
+  };      
+
+
+  // Signs-in to github
+  trainTracker.prototype.githubSignIn = function() {
+    // Sign in Firebase using popup auth and Github as the identity provider.
+    var provider = new firebase.auth.GithubAuthProvider();
+    window.trainTracker.auth.signInWithPopup(provider)
+        .catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        $(".message").html(errorMessage);
+        $("#msgModal").modal(); 
+        console.log(error);
+        });
+  };  
 
   // Signs-out of App.
   trainTracker.prototype.signOut = function() {
-    window.trainTracker.auth.signOut();
+    window.trainTracker.auth.signOut()
+        .catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        $(".message").html(errorMessage);
+        $("#msgModal").modal(); 
+        console.log(error);
+        });
+  };  
+
+
+  // Triggers when the auth state change for instance when the user signs-in or signs-out.
+  trainTracker.prototype.onAuthStateChanged = function(user) {
+    if (user) { // User is signed in!
+      // Get profile pic and user's name from the Firebase user object.
+      var profilePicUrl = user.photoURL;
+      var userName = user.displayName;
+
+      // Set the user's profile pic and name.
+      this.userPic.css("backgroundImage", "url(" + profilePicUrl + ")");
+      this.userName.text(userName);
+
+      // Show user's profile and sign-out button.
+      this.userName.removeClass("hidden");
+      this.userPic.removeClass("hidden");
+      this.signOutButton.removeClass("hidden");
+
+      // Hide sign-in button.
+      this.signInButton.addClass("hidden");
+
+    } else { // User is signed out!
+      // Hide user's profile and sign-out button.
+      this.userName.addClass("hidden");
+      this.userPic.addClass("hidden");
+      this.signOutButton.addClass("hidden");
+
+      // Show sign-in button.
+      this.signInButton.removeClass("hidden");
+    }
+  };
+
+  // Returns true if user is signed-in. Otherwise false and displays a message.
+  trainTracker.prototype.checkSignedIn = function() {
+    // Return true if the user is signed in Firebase
+    if (window.trainTracker.auth.currentUser) {
+      return true;
+    }
+
+    // Return false if the user is not signed in Firebase
+    return false;
   };
 
   trainTracker.prototype.addTrain = function(event) {
@@ -207,48 +282,6 @@ $(document).ready(function() {
 
   }; //end delete-train-info on click
 
-
-  // Triggers when the auth state change for instance when the user signs-in or signs-out.
-  trainTracker.prototype.onAuthStateChanged = function(user) {
-    if (user) { // User is signed in!
-      // Get profile pic and user's name from the Firebase user object.
-      var profilePicUrl = user.photoURL;
-      var userName = user.displayName;
-
-      // Set the user's profile pic and name.
-      this.userPic.css("backgroundImage", "url(" + profilePicUrl + ")");
-      this.userName.text(userName);
-
-      // Show user's profile and sign-out button.
-      this.userName.removeClass("hidden");
-      this.userPic.removeClass("hidden");
-      this.signOutButton.removeClass("hidden");
-
-      // Hide sign-in button.
-      this.signInButton.addClass("hidden");
-
-    } else { // User is signed out!
-      // Hide user's profile and sign-out button.
-      this.userName.addClass("hidden");
-      this.userPic.addClass("hidden");
-      this.signOutButton.addClass("hidden");
-
-      // Show sign-in button.
-      this.signInButton.removeClass("hidden");
-    }
-  };
-
-  // Returns true if user is signed-in. Otherwise false and displays a message.
-  trainTracker.prototype.checkSignedIn = function() {
-    // Return true if the user is signed in Firebase
-    if (window.trainTracker.auth.currentUser) {
-      return true;
-    }
-
-    // Return false if the user is not signed in Firebase
-    return false;
-  };
-
   trainTracker.prototype.update = function() {
     var timeNow = moment();
     // $("#clock").html(timeNow.format("hh:mm:ss A"));
@@ -262,7 +295,7 @@ $(document).ready(function() {
   trainTracker.prototype.refreshTrainTracker = function() {
 
     $(".train-table").empty();
-    console.log("refresh-header")
+
     $(".train-table").append($("<tr>")
       .append("<th style=\"width:15%\">Action</th>")
       .append("<th style=\"width:20%\">Train Name</th>")
@@ -305,14 +338,14 @@ $(document).ready(function() {
 
             // Train schedule to table
             var $tr = $("<tr>").attr("data-key", dataKey)
-              .append("<td> <span id=\"edit-train\">Edit</span>/" +
-                           "<span id=\"delete-train\">Delete</span>")
+              .append("<td> <span data-toggle=\"tooltip\" data-placement=\"left\" title=\"Edit\" class=\"tip fa fa-edit\" id=\"edit-train\"></span> " +
+                           "<span  data-toggle=\"tooltip\" data-placement=\"right\" title=\"Delete\" class=\"tip fa fa-eraser\" id=\"delete-train\"></span>")
               .append("<td class=\"table-lcd-font\">" + dataObj.trainName)
               .append("<td class=\"table-lcd-font\">" + dataObj.destination)
               .append("<td class=\"table-lcd-font\">" + dataObj.frequency)
               .append("<td class=\"table-lcd-font\">" + moment(nextTrain).format("hh:mm A"))
               .append("<td class=\"table-lcd-font\">" + tMinutesTillTrain);
-            console.log("for-each")
+
             $(".train-table").append($tr);
 
           }) // ends forEach
@@ -327,6 +360,8 @@ $(document).ready(function() {
     window.trainTracker = new trainTracker();
   };
 
+  //App Starts executing here
+
   $("#first-train-time-input").timepicker({ timeFormat: "HH:mm", interval: 5 });
 
   $(".train-table").empty();
@@ -339,14 +374,14 @@ $(document).ready(function() {
     .append("<th style=\"width:15%\">Next Arrival</th>")
     .append("<th style=\"width:15%\">Minutes Away</th>"));
 
-  // $("#clock").fitText(1.3);
-
   var clock = $("#clock").FlipClock({
     clockFace: "TwelveHourClock"
   });
 
   setInterval(trainTracker.prototype.update, 1000);
 
+  //Initializes Edit/Delete tooltips
+  $('[data-toggle="tooltip"]').tooltip(); 
 
   databaseRef.ref().on("child_added", function(childSnapshot) {
 
@@ -374,8 +409,8 @@ $(document).ready(function() {
 
     // Train schedule to table
     var $tr = $("<tr>").attr("data-key", childSnapshot.key)
-      .append("<td> <span id=\"edit-train\">Edit</span>/" +
-                   "<span id=\"delete-train\">Delete</span>")
+      .append("<td> <span data-toggle=\"tooltip\" data-placement=\"left\" title=\"Edit\" class=\"tip fa fa-edit\" id=\"edit-train\"></span> " +
+                   "<span data-toggle=\"tooltip\" data-placement=\"right\" title=\"Delete\" class=\"tip fa fa-eraser\" id=\"delete-train\"></span>")
       .append("<td class=\"table-lcd-font\">" + childSnapshot.val().trainName)
       .append("<td class=\"table-lcd-font\">" + childSnapshot.val().destination)
       .append("<td class=\"table-lcd-font\">" + childSnapshot.val().frequency)

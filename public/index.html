@@ -4,6 +4,7 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Train Tracker</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <!-- Optional theme -->
@@ -21,7 +22,14 @@
       </div>
       <ul class="nav navbar-nav navbar-right">
         <li class="hidden" id="sign-out"><a href="#"><span class="glyphicon glyphicon-log-out"></span> Sign Out</a></li>
-        <li id="sign-in"><a href="#"><span class="glyphicon glyphicon-user"></span> Login</a></li>
+        <li class="dropdown" id="sign-in">
+                      <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> Login<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li id="google-sign-in"><a href="#"><span class="fa fa-google-plus-official" style="font-size:24px"></span> Google</a></li>
+                  <li id="github-sign-in"><a href="#"><span class="fa fa-github" style="font-size:24px"></span> Github</a></li>
+                </ul>
+            </li>
+        <!-- <li id="sign-in"><a href="#"><span class="glyphicon glyphicon-user"></span> Login</a></li> -->
       </ul>
     </div>
   </nav>
@@ -43,7 +51,7 @@
       <div class="col-lg-12">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title">Train Tracker Schedule</h3>
+            <h3 class="panel-title"><span class="fa fa-calendar" style="font-size:24px"></span> Train Tracker: Schedule</h3>
           </div>
           <div class="panel-body">
             <table class="train-table" style="width:100%">
@@ -64,7 +72,7 @@
       <div class="col-lg-12">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title">Train Tracker Administration</h3>
+            <h3 class="panel-title"><span class="fa fa-database" style="font-size:24px"></span> Train Tracker: Add a Train</h3>
           </div>
           <div class="panel-body">
             <form role="form">
@@ -98,7 +106,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Edit Train Information</h4>
+          <h4 class="modal-title"><span class="fa fa-edit" style="font-size:24px"></span> Edit Train Information</h4>
         </div>
         <div class="modal-body">
           <form role="form">
@@ -134,7 +142,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Delete Train Information</h4>
+          <h4 class="modal-title"><span class="fa fa-eraser" style="font-size:24px"></span> Delete Train Record</h4>
         </div>
         <div class="modal-body">
           <form role="form">
@@ -170,7 +178,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Information</h4>
+          <h4 class="modal-title"><span class="fa fa-exclamation-triangle" style="font-size:24px"></span> Warning</h4>
         </div>
         <div class="modal-body">
           <div class="message">
