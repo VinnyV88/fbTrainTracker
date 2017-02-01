@@ -23,7 +23,7 @@ $(document).ready(function() {
   "use strict";
 
   // Initialize
-  function trainTracker() {
+  function TrainTracker() {
 
     // Shortcuts to DOM Elements.
     this.userPic = $("#user-pic");
@@ -47,7 +47,7 @@ $(document).ready(function() {
   };
 
   // Sets up shortcuts to Firebase features and initiate firebase auth.
-  trainTracker.prototype.initFirebase = function() {
+  TrainTracker.prototype.initFirebase = function() {
     // Shortcuts to Firebase SDK features.
     this.auth = firebase.auth();
     this.database = firebase.database();
@@ -57,10 +57,10 @@ $(document).ready(function() {
 
 
   // Signs-in to google
-  trainTracker.prototype.googleSignIn = function() {
+  TrainTracker.prototype.googleSignIn = function() {
     // Sign in Firebase using popup auth and Google as the identity provider.
     var provider = new firebase.auth.GoogleAuthProvider();
-    window.trainTracker.auth.signInWithPopup(provider)
+    window.TrainTracker.auth.signInWithPopup(provider)
         .catch(function(error) {
         // Handle Errors here.
         var errorCode = error.code;
@@ -73,10 +73,10 @@ $(document).ready(function() {
 
 
   // Signs-in to github
-  trainTracker.prototype.githubSignIn = function() {
+  TrainTracker.prototype.githubSignIn = function() {
     // Sign in Firebase using popup auth and Github as the identity provider.
     var provider = new firebase.auth.GithubAuthProvider();
-    window.trainTracker.auth.signInWithPopup(provider)
+    window.TrainTracker.auth.signInWithPopup(provider)
         .catch(function(error) {
         // Handle Errors here.
         var errorCode = error.code;
@@ -88,8 +88,8 @@ $(document).ready(function() {
   };  
 
   // Signs-out of App.
-  trainTracker.prototype.signOut = function() {
-    window.trainTracker.auth.signOut()
+  TrainTracker.prototype.signOut = function() {
+    window.TrainTracker.auth.signOut()
         .catch(function(error) {
         // Handle Errors here.
         var errorCode = error.code;
@@ -102,7 +102,7 @@ $(document).ready(function() {
 
 
   // Triggers when the auth state change for instance when the user signs-in or signs-out.
-  trainTracker.prototype.onAuthStateChanged = function(user) {
+  TrainTracker.prototype.onAuthStateChanged = function(user) {
     if (user) { // User is signed in!
       // Get profile pic and user's name from the Firebase user object.
       var profilePicUrl = user.photoURL;
@@ -132,9 +132,9 @@ $(document).ready(function() {
   };
 
   // Returns true if user is signed-in. Otherwise false and displays a message.
-  trainTracker.prototype.checkSignedIn = function() {
+  TrainTracker.prototype.checkSignedIn = function() {
     // Return true if the user is signed in Firebase
-    if (window.trainTracker.auth.currentUser) {
+    if (window.TrainTracker.auth.currentUser) {
       return true;
     }
 
@@ -142,10 +142,10 @@ $(document).ready(function() {
     return false;
   };
 
-  trainTracker.prototype.addTrain = function(event) {
+  TrainTracker.prototype.addTrain = function(event) {
     event.preventDefault();
 
-    if (!(trainTracker.prototype.checkSignedIn())) { //not signed in, not allowed to add
+    if (!(TrainTracker.prototype.checkSignedIn())) { //not signed in, not allowed to add
 
       $(".message").html("<p>You must be signed in to this app to add train records!</p>");
 
@@ -179,9 +179,9 @@ $(document).ready(function() {
   }; //end add-train click
 
 
-  trainTracker.prototype.editTrain = function() {
+  TrainTracker.prototype.editTrain = function() {
 
-    if (!(trainTracker.prototype.checkSignedIn())) { //not signed in, not allowed to edit
+    if (!(TrainTracker.prototype.checkSignedIn())) { //not signed in, not allowed to edit
 
       $(".message").html("<p>You must be signed in to this app to edit train information!</p>");
 
@@ -214,7 +214,7 @@ $(document).ready(function() {
 
   }; //end edit-train on click
 
-  trainTracker.prototype.editTrainInfo = function() {
+  TrainTracker.prototype.editTrainInfo = function() {
 
     trainName = $("#train-name-edit").val().trim();
     destination = $("#destination-edit").val().trim();
@@ -233,13 +233,13 @@ $(document).ready(function() {
 
     $(".close-edit").trigger("click");
 
-    trainTracker.prototype.refreshTrainTracker();
+    TrainTracker.prototype.refreshTrainTracker();
 
   }; //end edit-train-info on click
 
-  trainTracker.prototype.deleteTrain = function() {
+  TrainTracker.prototype.deleteTrain = function() {
 
-    if (!(trainTracker.prototype.checkSignedIn())) { //not signed in, not allowed to delete
+    if (!(TrainTracker.prototype.checkSignedIn())) { //not signed in, not allowed to delete
 
       $(".message").html("<p>You must be signed in to this app to delete train records!</p>");
 
@@ -272,27 +272,27 @@ $(document).ready(function() {
   }; //end delete-train on click
 
 
-  trainTracker.prototype.deleteTrainInfo = function() {
+  TrainTracker.prototype.deleteTrainInfo = function() {
 
     firebase.database().ref().child(trainKey).remove();
 
     $(".close-delete").trigger("click");
 
-    trainTracker.prototype.refreshTrainTracker();
+    TrainTracker.prototype.refreshTrainTracker();
 
   }; //end delete-train-info on click
 
-  trainTracker.prototype.update = function() {
+  TrainTracker.prototype.update = function() {
     var timeNow = moment();
     // $("#clock").html(timeNow.format("hh:mm:ss A"));
 
     if (timeNow.format("ss") === "00") {
-      trainTracker.prototype.refreshTrainTracker();
+      TrainTracker.prototype.refreshTrainTracker();
     }
 
   }; //end update function
 
-  trainTracker.prototype.refreshTrainTracker = function() {
+  TrainTracker.prototype.refreshTrainTracker = function() {
 
     $(".train-table").empty();
 
@@ -357,7 +357,7 @@ $(document).ready(function() {
   }; // end function
 
   window.onload = function() {
-    window.trainTracker = new trainTracker();
+    window.trainTracker = new TrainTracker();
   };
 
   //App Starts executing here
@@ -378,7 +378,7 @@ $(document).ready(function() {
     clockFace: "TwelveHourClock"
   });
 
-  setInterval(trainTracker.prototype.update, 1000);
+  setInterval(TrainTracker.prototype.update, 1000);
 
   //Initializes Edit/Delete tooltips
   $('[data-toggle="tooltip"]').tooltip(); 
